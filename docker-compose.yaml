@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  item-service:
+    container_name: item-service
+    depends_on:
+      - item-db
+    image: item-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8085:8085"
+  item-db:
+    container_name: item-db
+    restart: always
+    image: redis:7.0.5-alpine
+    ports:
+      - "6380:6380"
+    expose:
+      - 6380
+    volumes:
+      - item-db-volume:/var/lib/item-db
+
+volumes:
+  item-db-volume:
