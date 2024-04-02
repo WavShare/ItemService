@@ -10,7 +10,7 @@ on:
     branches: [ "main", "develop" ]
 
 jobs:
-  build_and_test:
+  build_test_analyze_and_push:
     runs-on: ubuntu-latest
 
     steps:

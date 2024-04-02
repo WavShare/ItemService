@@ -6,7 +6,6 @@ services:
       - item-db
     image: item-service
     build:
-      context: .
       dockerfile: Dockerfile
     restart: on-failure
     ports:
@@ -14,11 +13,11 @@ services:
   item-db:
     container_name: item-db
     restart: always
-    image: redis:7.0.5-alpine
+    image: mongo:7.0.8-rc0-jammy
     ports:
-      - "6380:6380"
+      - "27017:27017"
     expose:
-      - 6380
+      - 27017
     volumes:
       - item-db-volume:/var/lib/item-db
 
