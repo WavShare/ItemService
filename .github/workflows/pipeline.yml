@@ -24,6 +24,13 @@ jobs:
           cache: maven
 
       - name: Build and test application
+        env:
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          MONGO_HOST: ${{ secrets.MONGO_HOST }}
+          MONGO_PORT: ${{ secrets.MONGO_PORT }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
         run: mvn install
 
       - name: SonarCloud

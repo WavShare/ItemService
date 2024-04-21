@@ -16,5 +16,3 @@ spec:
     spec:
       containers:
         - name: item-service
-          ports:
-            - containerPort: 8080
