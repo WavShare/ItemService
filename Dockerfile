@@ -14,7 +14,7 @@ FROM maven:3.9.6-eclipse-temurin-21-alpine
 # Set the working directory in the container
 WORKDIR /app
 # Expose the port within the container
-EXPOSE 8085
+EXPOSE 8091
 # Copy the built JAR file from the previous stage to the container
 COPY --from=build /app/target/*.jar /app/*.jar
 # Run the application

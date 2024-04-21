@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   item-service:
     container_name: item-service
