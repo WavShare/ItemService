@@ -39,6 +39,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar -Dsonar.host.url="https://sonarcloud.io" -Dsonar.projectKey=WavShare_ItemService
 
+      - name: Azure login
+        if: success() && github.ref == 'refs/heads/main'
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: ACR build
         if: success() && github.ref == 'refs/heads/main'
         uses: azure/acr-build@v1
@@ -50,12 +56,6 @@ jobs:
           repository: ${{ secrets.AZURE_REPOSITORY }}
           image:  ${{ secrets.AZURE_REPOSITORY }}
           tag: ${{ github.sha }}
-
-      - name: Azure login
-        if: success() && github.ref == 'refs/heads/main'
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set AKS context
         if: success() && github.ref == 'refs/heads/main'
