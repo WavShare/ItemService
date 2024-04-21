@@ -52,7 +52,7 @@ jobs:
           service_principal: ${{ secrets.AZURE_SERVICE_PRINCIPAL_CLIENT_ID }}
           service_principal_password: ${{ secrets.AZURE_SERVICE_PRINCIPAL_CLIENT_SECRET }}
           tenant: ${{ secrets.AZURE_TENANT_ID }}
-          registry: ${{ secrets.AZURE_REGISTRY }}
+          registry: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
           repository: ${{ secrets.AZURE_REPOSITORY }}
           image:  ${{ secrets.AZURE_REPOSITORY }}
           tag: ${{ github.sha }}
@@ -76,6 +76,6 @@ jobs:
           manifests: |
             k8s/deployment.yaml
           strategy: 'basic'
-          images: '${{ secrets.AZURE_REGISTRY }}.azurecr.io/${{ secrets.AZURE_REPOSITORY }}/${{ secrets.AZURE_REPOSITORY }}:${{ github.sha }}'
+          images: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_REPOSITORY }}/${{ secrets.AZURE_REPOSITORY }}:${{ github.sha }}'
           pull-images: false
           namespace: 'development'
