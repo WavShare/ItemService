@@ -16,3 +16,6 @@ spec:
     spec:
       containers:
         - name: item-service
+          image: ${IMAGE}
+          ports:
+            - containerPort: ${SERVER_PORT}
