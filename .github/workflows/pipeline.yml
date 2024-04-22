@@ -41,21 +41,18 @@ jobs:
 
       - name: Azure login
         if: success() && github.ref == 'refs/heads/main'
-        uses: azure/login@v2
+        uses: azure/docker-login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          login-server: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io'
+          username: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
+          password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
 
       - name: ACR build
         if: success() && github.ref == 'refs/heads/main'
-        uses: azure/acr-build@v1
+        uses: docker/build-push-action@v5
         with:
-          service_principal: ${{ secrets.AZURE_SERVICE_PRINCIPAL_CLIENT_ID }}
-          service_principal_password: ${{ secrets.AZURE_SERVICE_PRINCIPAL_CLIENT_SECRET }}
-          tenant: ${{ secrets.AZURE_TENANT_ID }}
-          registry: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
-          repository: ${{ secrets.AZURE_REPOSITORY }}
-          image:  ${{ secrets.AZURE_REPOSITORY }}
-          tag: ${{ github.sha }}
+          push: true
+          tags: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_REPOSITORY }}/${{ secrets.AZURE_REPOSITORY }}:${{ github.sha }}'
 
       - name: Set AKS context
         if: success() && github.ref == 'refs/heads/main'
