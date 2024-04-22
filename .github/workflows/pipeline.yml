@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_REPOSITORY }}/${{ secrets.AZURE_REPOSITORY }}:${{ github.sha }}'
+          tags: 'wavsharecontainerregistry.azurecr.io/wavshare-itemservice/wavshare-itemservice:latest'
 
       - name: Azure login
         if: success() && github.ref == 'refs/heads/main'
@@ -73,14 +73,12 @@ jobs:
 
       - name: Deploy to AKS
         if: success() && github.ref == 'refs/heads/main'
-        env:
-          IMAGE: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_REPOSITORY }}/${{ secrets.AZURE_REPOSITORY }}:${{ github.sha }}'
         uses: Azure/k8s-deploy@v5
         with:
           action: 'deploy'
           manifests: |
             k8s/deployment.yaml
           strategy: 'basic'
-          images: $IMAGE
+          images: 'wavsharecontainerregistry.azurecr.io/wavshare-itemservice/wavshare-itemservice:latest'
           pull-images: false
           namespace: 'development'
