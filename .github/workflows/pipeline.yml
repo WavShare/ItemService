@@ -81,6 +81,6 @@ jobs:
           manifests: |
             k8s/deployment.yaml
           strategy: 'basic'
-          images: ${IMAGE}
+          images: $IMAGE
           pull-images: false
           namespace: 'development'
