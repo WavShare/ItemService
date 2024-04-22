@@ -18,4 +18,4 @@ spec:
         - name: item-service
           image: ${IMAGE}
           ports:
-            - containerPort: ${SERVER_PORT}
+            - containerPort: 8091

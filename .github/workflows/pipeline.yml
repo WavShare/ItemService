@@ -25,12 +25,12 @@ jobs:
 
       - name: Build and test application
         env:
-          SERVER_PORT: ${{ secrets.SERVER_PORT }}
           MONGO_HOST: ${{ secrets.MONGO_HOST }}
           MONGO_PORT: ${{ secrets.MONGO_PORT }}
           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
           MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
+          SERVER_PORT: 8091
         run: mvn install
 
       - name: SonarCloud
@@ -75,7 +75,6 @@ jobs:
         if: success() && github.ref == 'refs/heads/main'
         env:
           IMAGE: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_REPOSITORY }}/${{ secrets.AZURE_REPOSITORY }}:${{ github.sha }}'
-          SERVER_PORT: ${{ secrets.SERVER_PORT }}
         uses: Azure/k8s-deploy@v5
         with:
           action: 'deploy'
