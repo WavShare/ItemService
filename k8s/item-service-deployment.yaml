@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: item-service-service
+spec:
+  selector:
+    app: item-service
+  ports:
+    - port: 8091
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: item-service-deployment
+  labels:
+    app: item-service
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: item-service
+  template:
+    metadata:
+      labels:
+        app: item-service
+    spec:
+      containers:
+        - name: item-service
+          #          image: 'wavsharecontainerregistry.azurecr.io/wavshare-itemservice/wavshare-itemservice:latest'
+          image: 'k3d-wavshare:5000/itemservice:latest'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+          env:
+            - name: SERVER_PORT
+              value: '8080'
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: item-service-secret
+                  key: mongo-uri
+            - name: MONGO_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: item-service-secret
+                  key: mongo-database
+            - name: RABBIT_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: host
+            - name: RABBIT_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: host
+            - name: RABBIT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: username
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: password
+

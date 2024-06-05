@@ -1,0 +1,40 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 3
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: "1"
+  rabbitmq:
+    additionalConfig: |
+      log.console.level = info
+      channel_max = 700
+      default_user = ${RABBITMQ_DEFAULT_USER_USERNAME}
+      default_pass = ${RABBITMQ_DEFAULT_USER_PASSWORD}
+      default_user_tags.administrator = true
+  service:
+    type: LoadBalancer
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+              - name: rabbitmq
+                env:
+                - name: RABBITMQ_DEFAULT_USER_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: rabbitmq-secret
+                      key: username
+                - name: RABBITMQ_DEFAULT_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: rabbitmq-secret
+                      key: password
