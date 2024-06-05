@@ -59,8 +59,8 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-secret
-                  key: host
-            - name: RABBIT_USER
+                  key: port
+            - name: RABBIT_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-secret
